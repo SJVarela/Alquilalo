@@ -1,6 +1,8 @@
 const Sequelize = require("sequelize");
 const UserModel = require("./user");
+const AdressModel = require("./adress")
 
+//Db creation
 const sequelize = new Sequelize("rentalo", "rentalo", "123456", {
   host: "localhost",
   dialect: "mysql",
@@ -12,6 +14,7 @@ const sequelize = new Sequelize("rentalo", "rentalo", "123456", {
   }
 });
 
+//Db check
 sequelize
   .authenticate()
   .then(() => {
@@ -21,10 +24,17 @@ sequelize
     console.error("Unable to connect to the database:", err);
   });
 
+//Models
 const User = UserModel(sequelize, Sequelize);
-sequelize.sync({ force: true })
-  .then(() => {
-    console.log(`Database & tables created!`)
-  })
+const Adress = AdressModel(sequelize,Sequelize);
 
-module.exports = User;
+//Relations
+Adress.belongsTo(User);
+
+//Sync
+sequelize.sync({ force: true }).then(() => {
+  console.log(`Database & tables created!`);
+});
+
+//exports
+module.exports = {User, Adress};

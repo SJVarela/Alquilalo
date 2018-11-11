@@ -6,7 +6,10 @@ module.exports = (sequelize, Sequelize) => {
       autoIncrement: true
     },
     firstname: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      validate: {
+        is: /^[a-z]+$/i
+      }
     },
     lastname: {
       type: Sequelize.STRING
